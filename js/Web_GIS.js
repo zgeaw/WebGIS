@@ -1,4 +1,6 @@
 /*WebGIS插件 32237384@qq.com*/
+
+//define(['jquery'], function($) {
 var Web_GIS = function(opts) {
 	var _this = this;
 	var tools = $('<div class="tools">');
@@ -634,7 +636,7 @@ var Web_GIS = function(opts) {
 		LayerData: function(_ul, _array, Num, AddType) { //构造数据
 			var _this_ = this;
 			var label = _ul;
-			var _li = _ul.parent().parent().children('li').length;
+			var _li = _ul.children('li').length;
 			var LevelId = label.attr('levelid');
 			if(Num > 0) {
 				label = _ul.next('ul').children('li:last-child').children('.label');
@@ -651,6 +653,9 @@ var Web_GIS = function(opts) {
 			GlobalTool.SetArray('Add', config.tool_layer, LevelIds, _array); //添加Json 数据
 			var _clone = $(ToolAppend.LayerData([_array], TypeName, LevelIds).join(''));
 			if(Num > 0) {
+				if(_ul.next('ul')){
+					_ul.append('<ul>');
+				}
 				var _ul_ = _ul.next('ul');
 				if(_ul_.length > 0) {
 					_ul.next('ul').append(_clone.html());
@@ -686,7 +691,6 @@ var Web_GIS = function(opts) {
 			if(ParentLayerId == -1) {
 				label = $('#' + config.ToolLayerId + ' .dropDown').children('ul');
 			}
-			console.log(label)
 			if(label.length > 0) {
 				_this_.IsObj(label, Layers, ParentLayerId, AddType);
 			}
@@ -724,7 +728,7 @@ var Web_GIS = function(opts) {
 					state = GlobalTool.SetArray('Get', config.tool_layer, LevelIds);
 				}
 			} else { //返回根节点
-				state = config.tool_layer;
+				state = JSON.stringify(config.tool_layer);
 			}
 			return state;
 		},
@@ -1494,3 +1498,7 @@ var Web_GIS = function(opts) {
 		ToolAppend.TabClick(); //对话框点击事件
 	}
 }
+//	return {
+//		newGis: Web_GIS
+//	}
+//});
